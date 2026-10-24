@@ -95,7 +95,9 @@ services:
     networks:
       - lighthouse-network
     healthcheck:
-      test: ["CMD-SHELL", "wget -q -O- http://localhost:8080/healthz | grep -q ok"]
+      # 127.0.0.1, not localhost: inside the container localhost resolves to ::1 first,
+      # and nginx listens on IPv4 only.
+      test: ["CMD-SHELL", "wget -q -O- http://127.0.0.1:8080/healthz | grep -q ok"]
       interval: 30s
       timeout: 5s
       retries: 3
