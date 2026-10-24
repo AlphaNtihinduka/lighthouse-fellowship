@@ -23,6 +23,10 @@ dashboard/src/
 
 Pages compose features; logic stays out of page files. Shared types for note content live in `src/api/types.ts` and match `docs/API.md` and PLAN §4.
 
+## Plain HTTP until phase 6
+
+The live dashboard is served over `http://<VPS_IP>:8100`, which browsers do not treat as a secure context. APIs that exist only on HTTPS or `localhost` are **undefined** there even though they work in local dev and in jsdom tests: `crypto.randomUUID` (use `crypto.getRandomValues`), `crypto.subtle`, `navigator.clipboard`, service workers. This broke "add block" once. Add a test that removes the API when you touch anything near these.
+
 ## API Client
 
 * Base URL from `VITE_API_URL` (build-time; plain HTTP to the VPS IP during testing, HTTPS at release). Never put secrets in `VITE_*` variables; they ship to the browser.

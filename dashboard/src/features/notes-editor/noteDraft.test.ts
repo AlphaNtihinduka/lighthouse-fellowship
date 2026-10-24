@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import type { AdminNote } from '../../api/types'
 import {
   blockIdInServerMessage,
@@ -113,6 +113,13 @@ describe('helpers', () => {
       expect(taken.has(id)).toBe(false)
       taken.add(id)
     }
+  })
+
+  it('works on a plain-HTTP page, where crypto.randomUUID does not exist', () => {
+    // The live dashboard is served over http:// until phase 6; browsers only offer
+    // randomUUID on secure pages.
+    vi.stubGlobal('crypto', { getRandomValues: globalThis.crypto.getRandomValues.bind(globalThis.crypto) })
+    expect(newId('b', new Set())).toMatch(/^b-[a-z0-9]{10}$/)
   })
 
   it('finds the block a server message is about', () => {

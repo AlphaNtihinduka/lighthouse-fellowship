@@ -13,11 +13,16 @@ export const BLOCK_LABELS: Record<BlockType, string> = {
   REFLECTION: 'Reflection',
 }
 
+const ID_ALPHABET = 'abcdefghijklmnopqrstuvwxyz0123456789'
+
 // Short, stable, URL-safe ids. Generated once when a block or blank is created and
 // never renumbered: game attempts and personal notes point at them (ADR 0002).
+// crypto.getRandomValues, not crypto.randomUUID: randomUUID only exists on secure
+// (HTTPS) pages, and the dashboard is served over plain HTTP until phase 6.
 export function newId(prefix: 'b' | 'k', taken: Set<string>): string {
   for (;;) {
-    const id = `${prefix}-${crypto.randomUUID().replace(/-/g, '').slice(0, 10)}`
+    const bytes = crypto.getRandomValues(new Uint8Array(10))
+    const id = `${prefix}-${Array.from(bytes, (byte) => ID_ALPHABET[byte % ID_ALPHABET.length]).join('')}`
     if (!taken.has(id)) {
       return id
     }
