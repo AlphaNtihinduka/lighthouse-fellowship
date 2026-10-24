@@ -188,7 +188,8 @@ class AuthIntegrationTest extends BaseIntegrationTest {
                         .header("Authorization", "Bearer " + jwtService.generateAdminToken(admin).token())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"currentPassword\":\"wrong-password\",\"newPassword\":\"a-brand-new-password\"}"))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Current password is incorrect"));
     }
 
     @Test

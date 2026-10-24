@@ -37,8 +37,8 @@ Every error has the same shape:
 
 | Status | When |
 |---|---|
-| 400 | Validation failed (body, query parameter, sermon note content, not a Sunday, bad UUID) |
-| 401 | No token, invalid or expired token, wrong login, wrong current password |
+| 400 | Validation failed (body, query parameter, sermon note content, not a Sunday, bad UUID), wrong current password |
+| 401 | No token, invalid or expired token, wrong login. Clients treat it as "signed out" |
 | 403 | Signed in but not allowed (also any path that has no access rule) |
 | 404 | Not found, **or not published yet** on a public endpoint |
 | 409 | Another note already exists for that Sunday |
@@ -219,7 +219,7 @@ The signed-in admin. The dashboard can call it on startup to check its stored to
 
 `200` with a new login response (same shape as `POST /api/auth/login`). **Every token issued before this,
 on every device, stops working**; the dashboard must switch to the returned token.
-Errors: `401` wrong current password, `400` new password too short or too long, `429` after 10 attempts
+Errors: `400` wrong current password (`"Current password is incorrect"`; deliberately not 401, which clients treat as an expired session) or new password too short/too long, `429` after 10 attempts
 per 15 minutes from one IP.
 
 ### `GET /api/admin/notes`

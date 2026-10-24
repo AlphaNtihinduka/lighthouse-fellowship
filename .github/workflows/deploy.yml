@@ -1,13 +1,15 @@
 name: Deploy
 
-# Deploys the backend to the VPS after CI has passed on main (all three jobs green).
+# Deploys the backend and the dashboard to the VPS after CI has passed on main (all
+# three jobs green).
 # Pull requests never deploy. There is no staging environment.
 #
 # Switched off until the VPS is ready: set the repository variable DEPLOY_ENABLED=true
 # (Settings → Secrets and variables → Actions → Variables) once these secrets exist:
 #   DOCKER_USERNAME, DOCKER_PASSWORD (a Docker Hub access token, not the account password),
 #   VPS_HOST, VPS_USER, VPS_SSH_KEY
-# and /opt/lighthouse-fellowship/.env exists on the VPS (see .env.example).
+# the repository variable DASHBOARD_API_URL (the API URL baked into the dashboard,
+# e.g. http://<VPS_IP>:8099), and /opt/lighthouse-fellowship/.env exists on the VPS.
 on:
   workflow_run:
     workflows: [ CI ]
@@ -24,7 +26,7 @@ env:
 
 jobs:
   image:
-    name: Build and push backend image
+    name: Build and push images
     runs-on: ubuntu-latest
     if: >-
       vars.DEPLOY_ENABLED == 'true' &&
@@ -54,6 +56,16 @@ jobs:
             ${{ secrets.DOCKER_USERNAME }}/lighthouse-fellowship-backend:latest
             ${{ secrets.DOCKER_USERNAME }}/lighthouse-fellowship-backend:${{ steps.sha.outputs.sha }}
 
+      - uses: docker/build-push-action@v7
+        with:
+          context: dashboard
+          push: true
+          build-args: |
+            VITE_API_URL=${{ vars.DASHBOARD_API_URL }}
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/lighthouse-fellowship-dashboard:latest
+            ${{ secrets.DOCKER_USERNAME }}/lighthouse-fellowship-dashboard:${{ steps.sha.outputs.sha }}
+
   deploy:
     name: Deploy to VPS
     runs-on: ubuntu-latest
@@ -78,35 +90,39 @@ jobs:
         uses: appleboy/ssh-action@v1.2.5
         env:
           BACKEND_IMAGE: ${{ secrets.DOCKER_USERNAME }}/lighthouse-fellowship-backend:${{ needs.image.outputs.sha }}
+          DASHBOARD_IMAGE: ${{ secrets.DOCKER_USERNAME }}/lighthouse-fellowship-dashboard:${{ needs.image.outputs.sha }}
           DEPLOY_DIR: ${{ env.DEPLOY_DIR }}
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          envs: BACKEND_IMAGE,DEPLOY_DIR
+          envs: BACKEND_IMAGE,DASHBOARD_IMAGE,DEPLOY_DIR
           script: |
             set -euo pipefail
             cd "$DEPLOY_DIR"
             test -f .env || { echo "Missing $DEPLOY_DIR/.env (see .env.example)"; exit 1; }
 
             # Pinned to this commit's image, so a rollback is the same command with an older SHA.
-            export BACKEND_IMAGE
+            export BACKEND_IMAGE DASHBOARD_IMAGE
             docker compose pull
             docker compose up -d
             docker image prune -f
 
-            # Wait for the backend healthcheck (/actuator/health) before calling it deployed.
-            container="$(docker compose ps -q backend)"
-            for attempt in $(seq 1 36); do
-              status="$(docker inspect --format '{{.State.Health.Status}}' "$container")"
-              echo "backend health: $status"
-              if [ "$status" = "healthy" ]; then
-                docker compose ps
-                echo "Deployed $BACKEND_IMAGE"
-                exit 0
+            # Wait for both healthchecks before calling it deployed.
+            for service in backend dashboard; do
+              container="$(docker compose ps -q "$service")"
+              healthy=no
+              for attempt in $(seq 1 36); do
+                status="$(docker inspect --format '{{.State.Health.Status}}' "$container")"
+                echo "$service health: $status"
+                if [ "$status" = "healthy" ]; then healthy=yes; break; fi
+                sleep 5
+              done
+              if [ "$healthy" != yes ]; then
+                echo "$service did not become healthy in 3 minutes"
+                docker compose logs --tail 100 "$service"
+                exit 1
               fi
-              sleep 5
             done
-            echo "Backend did not become healthy in 3 minutes"
-            docker compose logs --tail 100 backend
-            exit 1
+            docker compose ps
+            echo "Deployed $BACKEND_IMAGE and $DASHBOARD_IMAGE"

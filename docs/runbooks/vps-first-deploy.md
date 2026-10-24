@@ -41,7 +41,8 @@ Create an access token (Account settings → Personal access tokens, read/write)
 Secrets: `DOCKER_USERNAME`, `DOCKER_PASSWORD` (the access token), `VPS_HOST`, `VPS_USER`, `VPS_SSH_KEY`
 (same values SponsorDirect uses are fine if that user can run `docker`).
 
-Variable: `DEPLOY_ENABLED` = `true`. Until it is set, the Deploy workflow is skipped and CI stays green.
+Variables: `DEPLOY_ENABLED` = `true` (until it is set, the Deploy workflow is skipped and CI stays green) and
+`DASHBOARD_API_URL` = `http://<VPS_IP>:8099`, the API address baked into the dashboard build.
 
 ## 5. Firewall
 
@@ -53,6 +54,7 @@ Actions → **Deploy** → *Run workflow* (or push to `main`). The job waits for
 
 ```sh
 curl http://<VPS_IP>:8099/actuator/health          # {"status":"UP",...}
+curl http://<VPS_IP>:8100/healthz                  # ok (dashboard)
 curl -X POST http://<VPS_IP>:8099/api/auth/login \
   -H 'Content-Type: application/json' \
   -d '{"email":"<ADMIN_SEED_EMAIL>","password":"<ADMIN_SEED_PASSWORD>"}'

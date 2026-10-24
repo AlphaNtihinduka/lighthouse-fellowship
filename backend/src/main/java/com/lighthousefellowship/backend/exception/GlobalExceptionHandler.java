@@ -72,9 +72,16 @@ public class GlobalExceptionHandler {
         return build(HttpStatus.CONFLICT, "The request conflicts with existing data", request);
     }
 
-    @ExceptionHandler({InvalidCredentialsException.class, IncorrectPasswordException.class})
+    @ExceptionHandler(InvalidCredentialsException.class)
     public ResponseEntity<ApiErrorResponse> handleBadCredentials(RuntimeException exception, HttpServletRequest request) {
         return build(HttpStatus.UNAUTHORIZED, exception.getMessage(), request);
+    }
+
+    // 400, not 401: the caller's token is valid, only the typed current password is
+    // wrong. Clients treat 401 as "session expired" and sign out.
+    @ExceptionHandler(IncorrectPasswordException.class)
+    public ResponseEntity<ApiErrorResponse> handleIncorrectPassword(RuntimeException exception, HttpServletRequest request) {
+        return build(HttpStatus.BAD_REQUEST, exception.getMessage(), request);
     }
 
     @ExceptionHandler(CoverImageUploadException.class)

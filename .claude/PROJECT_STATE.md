@@ -14,22 +14,22 @@ observe and correct this file.
 
 Three empty projects building in CI, 22 skills, AGENTS.md, ADRs 0001–0004.
 
-## Current: phase 1, Backend core: code done, not yet committed or deployed
+## Phase 1, Backend core: complete (deployed 2026-10-25, image `dd82506`)
 
-Done and verified locally (`./mvnw verify`: 109 tests green against Testcontainers PostgreSQL 17; the Docker image built and the Compose stack ran healthy end to end):
-* Flyway `V1__baseline.sql`: `admin_user`, `sermon_note` only. The visitor tables from PLAN §5 come in phase 5 with their code.
-* Admin auth: `POST /api/auth/login`, `GET /api/admin/account`, `PATCH /api/admin/account/password` (bumps `token_version`). JWT with its own admin key + audience; the filter checks `tv` against the DB and takes the role from the row. Seeder from `ADMIN_SEED_*`.
-* Notes: admin CRUD, publish (now or scheduled) / unpublish, Cloudinary cover upload (magic-byte check, old cover deleted, 10 MB → 413). `NoteContentValidator` enforces ADR 0002; unknown JSON fields are rejected globally (`spring.jackson.deserialization.fail-on-unknown-properties=true`).
-* Public: `GET /api/notes?year=`, `/latest`, `/{id}`, all filtering `publish_at <= now` in the query; ETag + `Cache-Control: no-cache`.
-* Rate limit on login (per IP + per email) and password change; request-id filter with MDC; security chain ends in `denyAll()`.
-* `docker-compose.yml` (root), `backend/Dockerfile`, `.env.example`, `deploy.yml` (runs after CI passes on main, only when repo variable `DEPLOY_ENABLED=true`), action versions bumped in `ci.yml`.
-* `docs/API.md` (the contract for phase 2/3), `docs/runbooks/vps-first-deploy.md`.
+Live at `http://187.127.77.125:8099` (health UP, admin login verified). Deploys run automatically after green CI on `main` (`DEPLOY_ENABLED=true`, GitHub Actions deploy key in `VPS_SSH_KEY`, authorized for root on the VPS). Contract: `docs/API.md`; setup and rollback: `docs/runbooks/vps-first-deploy.md`.
 
-Blocked on the user to finish phase 1 ("API runs on the VPS"): follow `docs/runbooks/vps-first-deploy.md` (check ports/memory, create `/opt/lighthouse-fellowship/.env`, Docker Hub repo + token, GitHub secrets, `DEPLOY_ENABLED=true`).
+* Flyway V1: `admin_user`, `sermon_note` (visitor tables come in phase 5).
+* Admin auth (own JWT key/audience, `token_version`), seeder; note CRUD, validated JSONB content, publish/schedule/unpublish, Cloudinary cover upload; public reads filter `publish_at <= now`; login rate limit; request ids.
+* VPS `.env` at `/opt/lighthouse-fellowship/.env` (root-only), secrets generated on the server. Admin: `ntihindukaalpha@yahoo.com`, password = `ADMIN_SEED_PASSWORD` there.
+* **Covers are off**: `CLOUDINARY_URL` is a placeholder, so cover upload returns 502 until a real URL is set and the backend restarted.
 
-## Next: phase 2, Dashboard
+Follow-ups for the user: change the seed admin password; save the VPS `.env` in a password manager; rotate the Docker Hub token (it was pasted in chat) and update `DOCKER_PASSWORD`.
 
-Login, notes calendar, block editor with blanks, cover upload, preview, scheduling, Account page; enter the three sample notes. Deploy the dashboard on host port 8100 and add its origin to `CORS_ALLOWED_ORIGINS`. Set up the Postgres backup before real notes go in.
+## Current: phase 2, Dashboard (increment 1 of 2 done locally)
+
+Increment 1 (this PR): login (session in `sessionStorage`, any 401 signs out, safe `?next=` redirect), notes calendar (every Sunday of a month: Empty / Draft / Scheduled with Rome time / Published), Account page with password change, app shell, 19 Vitest + RTL tests, Docker image (unprivileged nginx, host port 8100), deployed alongside the backend by `deploy.yml` (repo variable `DASHBOARD_API_URL`). Backend: wrong current password on password change is now 400, not 401.
+
+Increment 2 (next): block editor with make-blank (1–3 words, stable ids), cover upload, phone-sized preview with the shared pagination function, publish now / schedule / unpublish, unsaved-changes warning; then enter the three sample notes. Set up the Postgres backup before real notes go in.
 
 ## Known gaps (not blocking)
 
