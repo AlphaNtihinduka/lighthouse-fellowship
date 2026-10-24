@@ -87,8 +87,11 @@ describe('NoteEditorPage, new note', () => {
       { text: '.' },
     ])
     expect(paragraph.id).toMatch(/^b-[a-z0-9]{10}$/)
-    // Saved: no "unsaved changes" prompt stood in the way of opening the new note.
-    expect(await screen.findByText('All changes saved')).toBeInTheDocument()
+    // Saved: no "unsaved changes" prompt stood in the way of opening the new note. The
+    // new-note editor is replaced by the saved note's editor, so query again each time
+    // instead of holding on to an element that may just have been removed.
+    await waitFor(() => expect(screen.getByText('All changes saved')).toBeInTheDocument())
+    expect(screen.queryByRole('alertdialog')).toBeNull()
   })
 
   it('refuses to make a blank of four words and says why', async () => {
