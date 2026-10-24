@@ -1,0 +1,22 @@
+# Secrets
+.env
+.env.*
+!.env.example
+!**/.env.example
+
+# Backend
+backend/target/
+
+# Node
+node_modules/
+
+# Editors / OS
+.idea/
+*.iml
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+
+# Claude Code machine-local files
+.claude/settings.local.json
+.claude/scheduled_tasks.lock

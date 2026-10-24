@@ -1,0 +1,15 @@
+/* Brand tokens, see docs/PLAN.md §11. Values are first estimates from the logo. */
+:root {
+  --color-navy: #1f2a4a;
+  --color-red: #c62828;
+  --color-yellow: #f4c542;
+  --color-paper: #fbf8f1;
+
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: var(--color-navy);
+  background: var(--color-paper);
+}
+
+body {
+  margin: 0;
+}

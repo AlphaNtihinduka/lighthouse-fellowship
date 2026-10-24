@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "Lighthouse Fellowship",
+    "slug": "lighthouse-fellowship",
+    "version": "1.0.0",
+    "orientation": "default",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.lighthousefellowship.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#FBF8F1",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "package": "com.lighthousefellowship.app"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "scheme": "lighthousefellowship"
+  }
+}
