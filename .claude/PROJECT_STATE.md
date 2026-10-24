@@ -25,9 +25,11 @@ Live at `http://187.127.77.125:8099` (health UP, admin login verified). Deploys 
 
 Follow-ups for the user: change the seed admin password; save the VPS `.env` in a password manager; rotate the Docker Hub token (it was pasted in chat) and update `DOCKER_PASSWORD`.
 
-## Next: phase 2, Dashboard
+## Current: phase 2, Dashboard (increment 1 of 2 done locally)
 
-Login, notes calendar, block editor with blanks, cover upload, preview, scheduling, Account page; enter the three sample notes. Deploy the dashboard on host port 8100 (its origin is already in the VPS `CORS_ALLOWED_ORIGINS`). Set up the Postgres backup before real notes go in.
+Increment 1 (this PR): login (session in `sessionStorage`, any 401 signs out, safe `?next=` redirect), notes calendar (every Sunday of a month: Empty / Draft / Scheduled with Rome time / Published), Account page with password change, app shell, 19 Vitest + RTL tests, Docker image (unprivileged nginx, host port 8100), deployed alongside the backend by `deploy.yml` (repo variable `DASHBOARD_API_URL`). Backend: wrong current password on password change is now 400, not 401.
+
+Increment 2 (next): block editor with make-blank (1–3 words, stable ids), cover upload, phone-sized preview with the shared pagination function, publish now / schedule / unpublish, unsaved-changes warning; then enter the three sample notes. Set up the Postgres backup before real notes go in.
 
 ## Known gaps (not blocking)
 

@@ -81,6 +81,35 @@ services:
         max-size: "10m"
         max-file: "3"
 
+  dashboard:
+    # Static admin web app. Its API URL is baked in at image build time (VITE_API_URL
+    # build arg in deploy.yml); locally `docker compose up --build` uses the default below.
+    image: ${DASHBOARD_IMAGE:-alphadevug/lighthouse-fellowship-dashboard:latest}
+    build:
+      context: ./dashboard
+      args:
+        VITE_API_URL: ${DASHBOARD_API_URL:-http://localhost:8099}
+    restart: unless-stopped
+    ports:
+      - "8100:8080"
+    networks:
+      - lighthouse-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O- http://localhost:8080/healthz | grep -q ok"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+          cpus: "0.25"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
 networks:
   lighthouse-network:
 
