@@ -3,7 +3,7 @@ name: dashboard-builder
 description: Use when building or changing the Lighthouse Fellowship admin web dashboard in dashboard/ (React + Vite + TypeScript), including login, the notes calendar, the block editor with blanks, cover upload, preview, scheduling, the visitors list and account settings.
 ---
 
-The dashboard is where the pastor and church admins write, schedule and publish sermon notes. Only the ADMIN role exists. Screens are in `docs/PLAN.md` §8; product rules in [[lighthouse-domain-rules]]. Built so far (phase 2, increment 1): login, notes calendar, account/password change, app shell, Docker image (`dashboard/Dockerfile`, unprivileged nginx on 8080, host port 8100). The note editor and preview come next. Keep these conventions. Wrong-current-password on password change is a 400, so the client's "any 401 signs out" rule stays simple.
+The dashboard is where the pastor and church admins write, schedule and publish sermon notes. Only the ADMIN role exists. Screens are in `docs/PLAN.md` §8; product rules in [[lighthouse-domain-rules]]. Built in phase 2: login, notes calendar, account/password change, the note editor (`features/notes-editor/`: `segments.ts` make-blank rules, `noteDraft.ts` validation mirroring the backend, `romeTime.ts` schedule conversion) and a continuous paper preview. The paginated preview waits for the shared pack function from phase 3. Docker image: `dashboard/Dockerfile`, unprivileged nginx on 8080, host port 8100. Wrong-current-password on password change is a 400, so the client's "any 401 signs out" rule stays simple.
 
 ## Stack
 
