@@ -5,8 +5,8 @@ description: Use when touching .env, .env.example, application.properties/yml, D
 
 ## Where secrets live
 
-* **Backend `.env` on the VPS** (next to `docker-compose.yml`, never committed): `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, `JWT_SECRET`, `JWT_EXPIRATION_MS`, `CLOUDINARY_URL`, the admin seed email and password (`ADMIN_SEED_EMAIL`, `ADMIN_SEED_PASSWORD` or whatever names phase 1 settles on), and later `RESEND_API_KEY` plus the sender address (phase 5/6).
-* **GitHub Actions secrets:** `VPS_HOST`, `VPS_USER`, `VPS_SSH_KEY`, `DOCKER_USERNAME`, `DOCKER_PASSWORD`.
+* **Backend `.env` on the VPS** (next to `docker-compose.yml`, never committed): `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, `JWT_ADMIN_SECRET`, `JWT_ADMIN_EXPIRATION_MS`, `CLOUDINARY_URL`, `ADMIN_SEED_EMAIL`, `ADMIN_SEED_PASSWORD`, `ADMIN_SEED_DISPLAY_NAME`, `CORS_ALLOWED_ORIGINS`, `RATE_LIMIT_TRUST_FORWARDED_HEADERS`, `BACKEND_IMAGE` (all in the root `.env.example`). Phase 5 adds `JWT_VISITOR_SECRET` (a separate key, see [[lighthouse-auth-guardrails]]) and `RESEND_API_KEY` plus the sender address.
+* **GitHub Actions secrets:** `VPS_HOST`, `VPS_USER`, `VPS_SSH_KEY`, `DOCKER_USERNAME`, `DOCKER_PASSWORD`; plus the repository variable `DEPLOY_ENABLED=true`, which switches on `deploy.yml`.
 * **Mobile app:** no secrets at all. See below.
 * **Dashboard:** no secrets. Anything in a Vite `VITE_*` variable ends up in the public JS bundle; only the API base URL belongs there.
 
@@ -26,13 +26,13 @@ Anything in the Expo app (JS bundle, `app.json`/`app.config`, `EXPO_PUBLIC_*` va
 
 * `.env` is never committed; `.env.example` holds placeholders only. Verify this before any commit touching these files.
 * Never print a secret value in logs, CI output, PR comments, or chat. Refer to the variable name.
-* No secret has a working default in `application.properties`. Use `${JWT_SECRET}` with no fallback so a missing value fails startup. A hardcoded fallback hides a misconfigured deploy and runs production on a known secret.
-* `JWT_SECRET` is long and random; the placeholder is obviously fake, e.g. `replace_with_secure_jwt_secret`.
+* No secret has a working default in `application.properties`. Use `${JWT_ADMIN_SECRET}` with no fallback so a missing value fails startup. A hardcoded fallback hides a misconfigured deploy and runs production on a known secret.
+* `JWT_ADMIN_SECRET` is long and random; the placeholder is obviously fake (`replace_with_secure_admin_jwt_secret`), and `JwtServiceImpl` refuses to start with it or with anything under 32 bytes.
 * The admin seeder creates the first admin from env vars only if no admin exists, stores a BCrypt hash, and never logs the password. Rotate the seed password after first login.
 * New secret: add it to `.env.example` as a placeholder, to the Compose `environment:` block, and to the env var list in the deployment docs. Remember the VPS compose file must be synced ([[docker-vps-deployment]]).
 * `DOCKER_PASSWORD` is a scoped Docker Hub access token, not the account password.
 * No rotation is enforced. When rotation comes up, suggest: immediately on a suspected leak, otherwise every 3-6 months, and note the date somewhere durable.
-* Rotating `JWT_SECRET` signs out every admin and visitor. Visitors would have to request a new email code. Flag this every time.
+* Rotating `JWT_ADMIN_SECRET` signs out every admin; rotating the visitor secret (phase 5) signs out every visitor, who must request a new email code. Flag this every time.
 * The production `.env` exists only on the VPS disk. Keep an encrypted copy off the VPS (password manager), so a lost VPS is not also lost secrets.
 
 ## Checklist

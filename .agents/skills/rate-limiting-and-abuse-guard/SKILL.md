@@ -5,7 +5,7 @@ description: Use when touching public endpoints (admin login, visitor request-co
 
 ## Status
 
-Not built yet. A rate-limit filter is planned for phase 1 (admin login) and extended in phase 5 (visitor codes). Planned approach, reusing SponsorDirect's pattern: a servlet filter using plain `bucket4j-core` with in-memory `ConcurrentHashMap<String, Bucket>` buckets, registered in `SecurityConfig` before the JWT filter, returning `429` with a `Retry-After` header.
+Built in phase 1: `config/RateLimitingFilter` (plain `bucket4j-core`, in-memory `ConcurrentHashMap<String, Bucket>` buckets, in the Security chain before the JWT filter, servlet auto-registration disabled in `SecurityConfig`, `429` + `Retry-After`). It covers `POST /api/auth/login` (10/min per IP, 5/15 min per email) and `PATCH /api/admin/account/password` (10/15 min per IP). Phase 5 adds the visitor code endpoints. Forwarded headers are trusted only when `RATE_LIMIT_TRUST_FORWARDED_HEADERS=true` (phase 6, behind Nginx). Known gap: the bucket maps are never pruned, so a spray of distinct emails grows memory until restart; add eviction if that ever shows up in `docker stats`.
 
 ## What to protect
 

@@ -1,7 +1,7 @@
 name: CI
 
 # Builds and tests all three parts on every push and PR to main.
-# Deploys are a separate workflow (deploy.yml), added in phase 1.
+# Deploys are a separate workflow (deploy.yml) that runs after this one passes on main.
 on:
   push:
     branches: [ main ]
@@ -16,8 +16,8 @@ jobs:
       run:
         working-directory: backend
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
         with:
           java-version: '25'
           distribution: 'temurin'
@@ -25,7 +25,11 @@ jobs:
           cache-dependency-path: backend/pom.xml
       # The wrapper loses its executable bit when committed from Windows.
       - run: chmod +x mvnw
+      # Integration tests start PostgreSQL 17 with Testcontainers (Docker is on the runner).
       - run: ./mvnw -B verify
+      - name: Print test reports
+        if: failure()
+        run: find target/surefire-reports -name "*.txt" -exec cat {} \;
 
   dashboard:
     name: Dashboard (React)
@@ -34,8 +38,8 @@ jobs:
       run:
         working-directory: dashboard
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: npm
@@ -51,8 +55,8 @@ jobs:
       run:
         working-directory: mobile
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: npm
