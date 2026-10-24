@@ -20,7 +20,7 @@ Anything in the Expo app (JS bundle, `app.json`/`app.config`, `EXPO_PUBLIC_*` va
 * No Cloudinary key, Resend key, JWT secret, admin credential, or any other key in mobile code or config. If a feature seems to need one, it goes through the backend.
 * Image uploads happen from the dashboard through the backend; the app only reads Cloudinary URLs.
 * The visitor token is stored with `expo-secure-store`, never `AsyncStorage` or a plain file.
-* Test builds may use `http://<VPS_IP>:8094`; release builds must use the HTTPS domain (phase 6). Keep the URL per EAS build profile, not hardcoded.
+* Test builds may use `http://<VPS_IP>:8099`; release builds must use the HTTPS domain (phase 6). Keep the URL per EAS build profile, not hardcoded.
 
 ## Rules
 

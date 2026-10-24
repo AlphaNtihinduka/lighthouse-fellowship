@@ -7,11 +7,11 @@ Nothing is deployed yet. The first deploy is part of phase 1. This is the planne
 
 * **Shared VPS.** The project runs on the VPS that also hosts SponsorDirect. It must not touch SponsorDirect's containers, network, volumes, or Nginx sites.
 * **Own Compose project and network.** Its own `docker-compose.yml` in its own directory on the VPS, its own Compose project name and its own Docker network. Do not join `sponsorDirect-network`.
-* **Ports.** Backend container port `8081`, host port `8094` (`8094:8081`). Dashboard nginx container, host port `8095`. Ports 8084, 8085, 8087, 8088 and 8089 belong to other apps. Run `ss -tlnp` on the VPS before the first deploy and before any port change: an undocumented app once silently held a port that the docs said was free.
+* **Ports.** Backend container port `8081`, host port `8099` (`8099:8081`). Dashboard nginx container, host port `8100`. Other apps hold 8001, 8002 and every port from 8080 to 8098 (checked 2026-10-24). Run `ss -tlnp` on the VPS before the first deploy and before any port change: an undocumented app once silently held a port that the docs said was free.
 * **Own Postgres.** Service name `postgres`, image `postgres:17`, its own named volume, not published on any host port.
 * **Dashboard** is a static Vite build served by a small nginx container.
 * **Mobile is not deployed to the VPS.** It is built with EAS Build; only the API base URL points at the VPS ([[secrets-and-config-management]]).
-* **No domain or HTTPS until phase 6.** Testing uses `http://<VPS_IP>:8094` and `:8095`. In phase 6, follow SponsorDirect's pattern: host Nginx proxies each domain to `127.0.0.1:8094` / `127.0.0.1:8095`, and certbot issues the certificates. Add new Nginx site files; never edit SponsorDirect's.
+* **No domain or HTTPS until phase 6.** Testing uses `http://<VPS_IP>:8099` and `:8100`. In phase 6, follow SponsorDirect's pattern: host Nginx proxies each domain to `127.0.0.1:8099` / `127.0.0.1:8100`, and certbot issues the certificates. Add new Nginx site files; never edit SponsorDirect's.
 * **There is no staging environment.** Every push to `main` deploys straight to the VPS.
 
 ## Pipeline (GitHub Actions over SSH)

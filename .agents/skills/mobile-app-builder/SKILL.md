@@ -35,7 +35,7 @@ Route files compose feature components; logic lives in `src/features`. Pure logi
 
 ## API and Config
 
-* Base URL from `EXPO_PUBLIC_API_URL`. During testing it is plain HTTP to the VPS IP and port 8094; release builds must use HTTPS. Allow cleartext only in development/preview build profiles, never production.
+* Base URL from `EXPO_PUBLIC_API_URL`. During testing it is plain HTTP to the VPS IP and port 8099; release builds must use HTTPS. Allow cleartext only in development/preview build profiles, never production.
 * `EXPO_PUBLIC_*` values are baked into the bundle and readable by anyone. No secrets in the app: no Cloudinary keys, no JWT secrets, no admin credentials.
 * Content types in `src/api/types.ts` mirror `docs/API.md` and PLAN §4 exactly (block union on `type`, segment union of text/blank).
 * All server data goes through TanStack Query; no ad-hoc fetch in components.

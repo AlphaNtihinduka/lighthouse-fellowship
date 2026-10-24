@@ -7,8 +7,8 @@ What the backend actually implements. Planned endpoints that don't exist yet sta
 
 | Environment | URL |
 |---|---|
-| VPS testing (plain HTTP, no domain yet) | `http://<VPS_IP>:8094` |
-| Local, Docker Compose | `http://localhost:8094` |
+| VPS testing (plain HTTP, no domain yet) | `http://<VPS_IP>:8099` |
+| Local, Docker Compose | `http://localhost:8099` |
 | Local, backend run directly | `http://localhost:8081` |
 | Production | not chosen yet (phase 6, HTTPS) |
 
@@ -124,7 +124,7 @@ Published note summaries, newest Sunday first, for the year → month → Sunday
 |---|---|---|
 | `year` | no | e.g. `2026` (2000–2100). Omitted → every published note |
 
-`GET http://<VPS_IP>:8094/api/notes?year=2026`
+`GET http://<VPS_IP>:8099/api/notes?year=2026`
 
 ```json
 [
@@ -305,7 +305,7 @@ their copy. Errors: `404`.
 file name), at most 10 MB. Uploaded to Cloudinary; the previous cover is deleted. Bumps `contentVersion`.
 
 ```
-curl -X POST http://<VPS_IP>:8094/api/admin/notes/<id>/cover-image \
+curl -X POST http://<VPS_IP>:8099/api/admin/notes/<id>/cover-image \
   -H "Authorization: Bearer <token>" -F "file=@giants.jpg"
 ```
 
