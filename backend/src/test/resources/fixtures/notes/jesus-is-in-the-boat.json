@@ -1,0 +1,72 @@
+{
+  "title": "Jesus is in the Boat!",
+  "sermonDate": "2026-10-18",
+  "preacherName": "Rev. Bill Steinmetz",
+  "blocks": [
+    {
+      "id": "b1",
+      "type": "SCRIPTURE",
+      "text": "Shortly before dawn Jesus went out to them, walking on the lake.",
+      "reference": "Matthew 14:25"
+    },
+    {
+      "id": "b2",
+      "type": "HEADING",
+      "numbered": true,
+      "segments": [
+        { "text": "The disciples saw God by " },
+        { "blankId": "k1", "answer": "walking" },
+        { "text": " on " },
+        { "blankId": "k2", "answer": "water" },
+        { "text": "." }
+      ]
+    },
+    {
+      "id": "b3",
+      "type": "PARAGRAPH",
+      "align": "LEFT",
+      "segments": [
+        { "text": "When Jesus is in the boat the " },
+        { "blankId": "k3", "answer": "storm" },
+        { "text": " is " },
+        { "blankId": "k4", "answer": "over" },
+        { "text": " and they " },
+        { "blankId": "k5", "answer": "arrive" },
+        { "text": " at the " },
+        { "blankId": "k6", "answer": "shore" },
+        { "text": "." }
+      ]
+    },
+    {
+      "id": "b4",
+      "type": "LIST",
+      "items": [
+        [
+          { "text": "Jesus is " },
+          { "blankId": "k7", "answer": "God" },
+          { "text": "." }
+        ],
+        [
+          { "text": "If you have Jesus in your heart, you are " },
+          { "blankId": "k8", "answer": "safe" },
+          { "text": "." }
+        ],
+        [
+          { "text": "Decide how you are going to " },
+          { "blankId": "k9", "answer": "spend" },
+          { "text": " your nickel." }
+        ],
+        [
+          { "text": "Be an active " },
+          { "blankId": "k10", "answer": "witness" },
+          { "text": " for Christ." }
+        ]
+      ]
+    },
+    {
+      "id": "b5",
+      "type": "REFLECTION",
+      "prompt": "What is God showing me as His 'safe' adventure for Him?"
+    }
+  ]
+}

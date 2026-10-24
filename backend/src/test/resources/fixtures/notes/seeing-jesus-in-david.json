@@ -1,0 +1,107 @@
+{
+  "title": "Seeing Jesus in David",
+  "sermonDate": "2026-09-20",
+  "preacherName": "Pastor Joe Benecasa",
+  "blocks": [
+    {
+      "id": "b1",
+      "type": "SCRIPTURE",
+      "text": "Man looks at the outward appearance, but the Lord looks at the heart.",
+      "reference": "1st Samuel 16:7"
+    },
+    {
+      "id": "b2",
+      "type": "PARAGRAPH",
+      "align": "CENTER",
+      "segments": [
+        { "text": "David modeled a " },
+        { "blankId": "k1", "answer": "specific" },
+        { "text": " " },
+        { "blankId": "k2", "answer": "behavior" },
+        { "text": " or " },
+        { "blankId": "k3", "answer": "characteristic" },
+        { "text": " of Jesus." }
+      ]
+    },
+    {
+      "id": "b3",
+      "type": "HEADING",
+      "numbered": true,
+      "segments": [
+        { "text": "David and Jesus remained under God's " },
+        { "blankId": "k4", "answer": "authority" },
+        { "text": "." }
+      ]
+    },
+    {
+      "id": "b4",
+      "type": "HEADING",
+      "numbered": true,
+      "segments": [
+        { "text": "David and Jesus were both " },
+        { "blankId": "k5", "answer": "unexpected" },
+        { "text": " " },
+        { "blankId": "k6", "answer": "kings" },
+        { "text": "." }
+      ]
+    },
+    {
+      "id": "b5",
+      "type": "LIST",
+      "items": [
+        [
+          { "text": "Saul was the man they " },
+          { "blankId": "k7", "answer": "wanted" },
+          { "text": "." }
+        ],
+        [
+          { "text": "David was the man He " },
+          { "blankId": "k8", "answer": "wanted" },
+          { "text": "." }
+        ]
+      ]
+    },
+    {
+      "id": "b6",
+      "type": "PARAGRAPH",
+      "align": "LEFT",
+      "segments": [
+        { "text": "The " },
+        { "blankId": "k9", "answer": "inside" },
+        { "text": " matters more to God than the " },
+        { "blankId": "k10", "answer": "outside" },
+        { "text": "." }
+      ]
+    },
+    {
+      "id": "b7",
+      "type": "HEADING",
+      "numbered": true,
+      "segments": [
+        { "text": "David and Jesus were " },
+        { "blankId": "k11", "answer": "betrayed" },
+        { "text": "; yet both " },
+        { "blankId": "k12", "answer": "overcame these attacks" },
+        { "text": "." }
+      ]
+    },
+    {
+      "id": "b8",
+      "type": "HEADING",
+      "numbered": false,
+      "segments": [
+        { "text": "Let's be clear!" }
+      ]
+    },
+    {
+      "id": "b9",
+      "type": "PARAGRAPH",
+      "align": "CENTER",
+      "segments": [
+        { "text": "God is trying to " },
+        { "blankId": "k13", "answer": "communicate" },
+        { "text": " to us who His Son is." }
+      ]
+    }
+  ]
+}
