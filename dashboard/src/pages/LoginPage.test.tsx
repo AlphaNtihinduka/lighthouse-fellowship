@@ -31,8 +31,13 @@ describe('LoginPage', () => {
       email: 'admin@example.com',
       password: 'correct horse battery',
     })
-    // Later calls carry the token.
-    const listCall = calls.find((call) => call.url.pathname === '/api/admin/notes')!
+    // Later calls carry the token. The notes request starts just after the page first
+    // renders, so wait for it rather than assume it has already been sent.
+    const listCall = await waitFor(() => {
+      const call = calls.find((c) => c.url.pathname === '/api/admin/notes')
+      expect(call).toBeDefined()
+      return call!
+    })
     expect((listCall.init.headers as Record<string, string>).Authorization).toBe('Bearer test-token')
   })
 

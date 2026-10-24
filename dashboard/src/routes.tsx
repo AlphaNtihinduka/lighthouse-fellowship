@@ -4,13 +4,15 @@ import { ApiError } from './api/client'
 import { RequireAdmin } from './auth/RequireAdmin'
 import { AppLayout } from './components/AppLayout'
 import { AccountPage } from './pages/AccountPage'
+import { ErrorPage } from './pages/ErrorPage'
 import { LoginPage } from './pages/LoginPage'
 import { NoteEditorPage } from './pages/NoteEditorPage'
 import { NotesPage } from './pages/NotesPage'
 
 export const routes: RouteObject[] = [
-  { path: '/login', element: <LoginPage /> },
+  { path: '/login', element: <LoginPage />, errorElement: <ErrorPage /> },
   {
+    errorElement: <ErrorPage />,
     element: (
       <RequireAdmin>
         <AppLayout />
