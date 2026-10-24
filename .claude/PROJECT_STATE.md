@@ -29,7 +29,7 @@ Blocked on the user to finish phase 1 ("API runs on the VPS"): follow `docs/runb
 
 ## Next: phase 2, Dashboard
 
-Login, notes calendar, block editor with blanks, cover upload, preview, scheduling, Account page; enter the three sample notes. Deploy the dashboard on host port 8095 and add its origin to `CORS_ALLOWED_ORIGINS`. Set up the Postgres backup before real notes go in.
+Login, notes calendar, block editor with blanks, cover upload, preview, scheduling, Account page; enter the three sample notes. Deploy the dashboard on host port 8100 and add its origin to `CORS_ALLOWED_ORIGINS`. Set up the Postgres backup before real notes go in.
 
 ## Known gaps (not blocking)
 
@@ -49,5 +49,5 @@ Login, notes calendar, block editor with blanks, cover upload, preview, scheduli
 * Java 25 target (same as SponsorDirect). **Machine-local:** the user's default `java` is 21 and there is no JDK 25; the build works with IntelliJ's JDK 26 (`JAVA_HOME=~/.jdks/openjdk-26.0.1 ./mvnw verify`), which compiles for 25. Installing Temurin 25 removes the need for this. Integration tests need Docker Desktop running.
 * Spring Boot 4 notes: Jackson 3 (`tools.jackson.*`; annotations are still `com.fasterxml.jackson.annotation`), Flyway via `spring-boot-starter-flyway`, Testcontainers 2 (`org.testcontainers.postgresql.PostgreSQLContainer`).
 * Delete my data: request in app → admin approves → purge 30 days after approval (ADR 0004).
-* VPS is shared with SponsorDirect and other apps. Taken ports: 8084, 8085, 8087, 8088, 8089. Ours: 8094 (API), 8095 (dashboard). Deploy dir `/opt/lighthouse-fellowship`.
+* VPS is shared with SponsorDirect and other apps. Taken ports (checked 2026-10-24): 8001, 8002 and every port from 8080 to 8098. 8094 is `attendance-domain`, 8095 an MT5 orchestrator on localhost. Ours: 8099 (API), 8100 (dashboard). Deploy dir `/opt/lighthouse-fellowship`.
 * No domain yet: test builds use HTTP to the VPS IP. Google Play account exists; Apple Developer account not yet. iPhone testing is via Expo Go only until then.

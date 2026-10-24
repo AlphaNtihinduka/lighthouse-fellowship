@@ -7,7 +7,7 @@ The dashboard is where the pastor and church admins write, schedule and publish 
 
 ## Stack
 
-React + Vite + TypeScript (strict), React Router, TanStack Query. Tests with Vitest + React Testing Library ([[lighthouse-testing-review]]). Served in production as a static build from a small nginx container on VPS port 8095.
+React + Vite + TypeScript (strict), React Router, TanStack Query. Tests with Vitest + React Testing Library ([[lighthouse-testing-review]]). Served in production as a static build from a small nginx container on VPS port 8100.
 
 ## Folder Layout
 

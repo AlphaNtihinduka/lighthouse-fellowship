@@ -27,8 +27,8 @@ Whenever endpoints are added or changed, document them in `docs/API.md` (not the
 
 ## Base URLs
 
-* Testing (VPS, plain HTTP): `http://<VPS_IP>:8094`. Do not write the real IP into the docs; use the placeholder.
-* Local: `http://localhost:8094` with Docker Compose, or `http://localhost:8081` running the backend directly.
+* Testing (VPS, plain HTTP): `http://<VPS_IP>:8099`. Do not write the real IP into the docs; use the placeholder.
+* Local: `http://localhost:8099` with Docker Compose, or `http://localhost:8081` running the backend directly.
 * Production: domain not chosen yet (phase 6, HTTPS). Do not invent one.
 
 ## Guardrails

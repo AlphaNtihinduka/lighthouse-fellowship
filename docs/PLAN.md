@@ -50,7 +50,7 @@ lighthouse-fellowship/         (one repo)
 - **Mobile:** Expo SDK (latest stable), expo-router, react-native-reanimated + react-native-gesture-handler (page turn, drag-and-drop), TanStack Query with a persisted cache (offline), expo-secure-store (visitor token), EAS Build (iOS builds without a Mac).
 - **Dashboard:** React + Vite + TypeScript, React Router, TanStack Query.
 - **Deployment:** its own `docker-compose.yml` on the SponsorDirect VPS with its own Postgres container and backend container; the dashboard is a static build served by a small nginx container. Plain HTTP on the VPS IP during testing; a domain and HTTPS at release.
-- **Ports.** Already taken on the VPS, according to the SponsorDirect docs: 8084 (SponsorDirect API), 8085 (SponsorDirect dashboard), 8087, 8088 (`wakeyme-portfolio`), 8089 (SponsorDirect website). Proposed: **8094 → backend**, **8095 → dashboard**. Postgres is not published to the host. Confirm with `ss -tlnp` on the VPS before the first deploy; 8088 once collided silently with an app nobody had documented.
+- **Ports.** Already taken on the VPS, according to the SponsorDirect docs: 8084 (SponsorDirect API), 8085 (SponsorDirect dashboard), 8087, 8088 (`wakeyme-portfolio`), 8089 (SponsorDirect website). **8099 → backend**, **8100 → dashboard** (2026-10-24: the first proposal, 8094/8095, was already taken by undocumented apps; the VPS actually uses 8001, 8002 and every port from 8080 to 8098). Postgres is not published to the host. Confirm with `ss -tlnp` on the VPS before the first deploy; 8088 once collided silently with an app nobody had documented.
 
 ## 4. Content model (the core decision)
 

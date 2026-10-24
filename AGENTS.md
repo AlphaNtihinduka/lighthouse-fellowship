@@ -45,7 +45,7 @@ Do not add SECRETARY, MEDIA or other admin sub-roles until explicitly requested.
 * Do not expose passwords or password hashes in responses. Do not store plaintext passwords.
 * Do not commit `.env`. Use `.env.example` with safe placeholders only.
 * Docker database hostname is `postgres`, not localhost.
-* Backend container port is 8081; VPS host port is 8094. Dashboard VPS host port is 8095. Do not reuse 8084, 8085, 8087, 8088, 8089 (other apps on the shared VPS).
+* Backend container port is 8081; VPS host port is 8099. Dashboard VPS host port is 8100. Other apps on the shared VPS hold 8001, 8002 and every port from 8080 to 8098 (checked with `ss -tlnp` on 2026-10-24; 8094/8095, the original plan, turned out to be taken). Check again before any port change.
 * No domain yet: test builds use plain HTTP to the VPS IP. Release builds must use HTTPS.
 * English only in the UI.
 

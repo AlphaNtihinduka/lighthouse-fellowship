@@ -5,12 +5,12 @@ One-time setup. After this, every push to `main` that passes CI deploys automati
 ## 1. Check the VPS has room (it is shared with SponsorDirect)
 
 ```sh
-ss -tlnp | grep -E ':(8094|8095)\b'   # must print nothing
+ss -tlnp | grep -E ':(8099|8100)\b'   # must print nothing
 free -h                              # need ~1.3 GB free: backend limit 768M + Postgres 512M
 docker stats --no-stream
 ```
 
-If 8094 or 8095 is taken, stop and pick other ports. Don't guess: an undocumented app once held 8088.
+If 8099 or 8100 is taken, stop and pick other ports. Don't guess: an undocumented app once held 8088.
 
 ## 2. Create the deploy directory and `.env`
 
@@ -25,7 +25,7 @@ chmod 600 .env
 * `POSTGRES_PASSWORD`, `JWT_ADMIN_SECRET`: `openssl rand -base64 48` each.
 * `ADMIN_SEED_EMAIL` / `ADMIN_SEED_PASSWORD`: the pastor's (or your) login; at least 12 characters.
 * `CLOUDINARY_URL`: from the Cloudinary console (*API environment variable*).
-* `CORS_ALLOWED_ORIGINS=http://<VPS_IP>:8095` once the dashboard is deployed (phase 2); for now `http://localhost:5173` lets a local dashboard talk to the VPS API.
+* `CORS_ALLOWED_ORIGINS=http://<VPS_IP>:8100` once the dashboard is deployed (phase 2); for now `http://localhost:5173` lets a local dashboard talk to the VPS API.
 
 Save a copy of this `.env` in a password manager. The VPS copy is the only other one.
 
@@ -45,15 +45,15 @@ Variable: `DEPLOY_ENABLED` = `true`. Until it is set, the Deploy workflow is ski
 
 ## 5. Firewall
 
-If `ufw` is active: `sudo ufw allow 8094/tcp` (and `8095/tcp` in phase 2). Postgres is never published.
+If `ufw` is active: `sudo ufw allow 8099/tcp` (and `8100/tcp` in phase 2). Postgres is never published.
 
 ## 6. Deploy and check
 
 Actions → **Deploy** → *Run workflow* (or push to `main`). The job waits for the backend healthcheck.
 
 ```sh
-curl http://<VPS_IP>:8094/actuator/health          # {"status":"UP",...}
-curl -X POST http://<VPS_IP>:8094/api/auth/login \
+curl http://<VPS_IP>:8099/actuator/health          # {"status":"UP",...}
+curl -X POST http://<VPS_IP>:8099/api/auth/login \
   -H 'Content-Type: application/json' \
   -d '{"email":"<ADMIN_SEED_EMAIL>","password":"<ADMIN_SEED_PASSWORD>"}'
 ```

@@ -44,7 +44,7 @@ services:
       context: ./backend
     restart: unless-stopped
     ports:
-      - "8094:8081"
+      - "8099:8081"
     environment:
       SERVER_PORT: 8081
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
