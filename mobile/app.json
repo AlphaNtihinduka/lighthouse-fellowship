@@ -23,6 +23,13 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "scheme": "lighthousefellowship"
+    "scheme": "lighthousefellowship",
+    "plugins": [
+      "expo-router",
+      "expo-image"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
   }
 }

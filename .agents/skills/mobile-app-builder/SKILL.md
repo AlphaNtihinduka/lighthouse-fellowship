@@ -3,7 +3,7 @@ name: mobile-app-builder
 description: Use when building or changing the Lighthouse Fellowship mobile app in mobile/ (Expo + TypeScript + expo-router), including screens, the paginated reader, the page-turn animation, the word game, offline caching, visitor sign-in, theming and EAS builds.
 ---
 
-The mobile app is where visitors read sermon notes and play the fill-in-the-blank game. It is anonymous by default and must work offline once a note has been opened. Product rules are in [[lighthouse-domain-rules]]; screens are in `docs/PLAN.md` §7. Nothing is built yet; set these conventions up in phase 3 and keep them.
+The mobile app is where visitors read sermon notes and play the fill-in-the-blank game. It is anonymous by default and must work offline once a note has been opened. Product rules are in [[lighthouse-domain-rules]]; screens are in `docs/PLAN.md` §7. Phase 3a built Home, Archive and the paginated Reader (`src/features/reader/`: `paginate.ts` pure planner, `renderItems.ts`, `usePages.tsx` measure-and-plan loop, `Paper.tsx`); keep these conventions.
 
 ## Stack
 
@@ -65,6 +65,14 @@ Route files compose feature components; logic lives in `src/features`. Pure logi
   * Body: sans serif; scripture bold italic with the reference bold, upright, right-aligned; headings bold with "I." numbers and a hanging indent.
 * Re-paginate on rotation, window size change and font-scale change. Keep the reader position close to the same block.
 * The dashboard preview uses the same rules; keep the packing function free of React Native so it can be shared or copied verbatim ([[dashboard-builder]]).
+
+## Checking layout without a phone
+
+* `npx expo start --web` against a local backend (`docker compose -p lf-local up postgres backend`, port 8099) renders the real screens. Screenshot them with puppeteer-core driving the installed Chrome and `page.emulate({ viewport: { width: 390, height: 844, isMobile: true } })`. Plain `chrome --headless --window-size=390,...` lays out at about 500px on Windows, and `--virtual-time-budget` stalls `onLayout`, so the reader looks blank or cut off.
+* Don't start the dev server with `CI=1` while iterating: it turns off file watching and serves the old bundle.
+* Web has no `onTextLayout`, so scripture is never split there (it is clipped at the footer). Splitting can only be checked on a phone.
+* Git Bash rewrites arguments starting with `/` into Windows paths; prefix such commands with `MSYS_NO_PATHCONV=1`.
+* `<Link asChild>` drops a `style` function on its child; use a `Pressable` with `router.push` when the pressed style matters.
 
 ## Animation and Gestures
 
