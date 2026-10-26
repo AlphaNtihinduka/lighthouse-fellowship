@@ -29,13 +29,19 @@ Follow-ups for the user: change the seed admin password; save the VPS `.env` in 
 
 Live at `http://187.127.77.125:8100`: login, notes calendar, editor with blanks, publish/schedule, paper-faithful preview (matched to `docs/brand/sample-notes/`). "Seeing Jesus in David" is entered as a draft. The other two sample notes can be entered whenever answers are known.
 
-## Current: phase 3, Mobile reader (3a of 2 done locally)
+## Phase 3, Mobile reader: 3a done (merged); 3b deferred until after the game
 
-3a (this PR): expo-router app (`mobile/src/app`): Home (this Sunday + Continue), Archive (year → month → Sunday), Reader with measured pagination (`features/reader/paginate.ts`, pure and unit-tested; scripture split at sentence ends; headings kept with the next block; "(con't)" on later pages, "(over)" on all but the last), offline cache persisted to AsyncStorage (30 days), last page remembered. Checked on web at 390×844 against a local backend with the full Killing Giants text (4 pages).
+3a: Home, Archive, Reader with measured pagination, offline cache. The user runs it in Expo Go on an iPhone (`npx expo start` in `mobile/`; Expo CLI login needs `npx expo login --no-browser` on this Windows machine). Still to confirm on the phone: scripture split across pages (publish "Killing Giants" and check pages 1–2).
 
-Not yet checked on a real phone: scripture splitting (needs `onTextLayout`, which web lacks), Android/iOS fonts, Expo Go over plain HTTP.
+3b (after phase 4, user's choice): page-turn animation, EAS preview APK, dashboard preview on the shared `paginate.ts`, app icon (needs the high-resolution logo).
 
-3b (next): page-turn animation (Reanimated + Gesture Handler, with the slide fallback), EAS preview APK (cleartext HTTP allowed only in that profile), dashboard preview switched to the same `paginate.ts`, app icon/splash (needs the high-resolution logo).
+## Current: phase 4, Word game: built, PR open
+
+Play mode (default for notes with blanks; Read via the top-bar toggle): per-page tray with only that page's answers, shuffled with a fixed seed; drag a chip onto a blank or tap chip then blank; tap a filled blank to send the word back; "x of N blanks filled"; Finish on the last page scores the whole note; results sheet (score, celebration ≥80%, missed answers, Review / Show all answers / Try again); review marks blanks green ✓ / red ✗. Repeated answers are interchangeable. Placements are saved per note + contentVersion; finished attempts are stored with a `clientAttemptId` and `synced: false` for phase 5. Archive shows the best score.
+
+Verified on web (390×844, puppeteer) against a local backend: tap flow, drag-and-drop, finish, results, review marking. Not yet on a phone: drag hit-testing uses `measureInWindow` vs Gesture Handler `absoluteX/Y`; confirm a drop lands on Android and iPhone (tap always works).
+
+Live data: "Seeing Jesus in David" (Sept 20) and "Killing Giants" (Sept 13, full text and answers from the photos) are drafts in the live dashboard.
 
 ## Known gaps (not blocking)
 
