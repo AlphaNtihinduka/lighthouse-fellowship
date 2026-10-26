@@ -209,6 +209,9 @@ Logo: `docs/brand/logo-original.png`, a red and white striped lighthouse with ye
 | Lighthouse red | Primary buttons, active states, score highlight | `#C62828` |
 | Beam yellow | Word-bank chips, celebration, "new note" badge | `#F4C542` |
 | Paper | Page background in the reader | `#FBF8F1` (warm off-white, like the printed sheet) |
+| Maroon | "Sermon Notes" and the header rule on every page | `#7A3328` (estimated from the photographed sheet) |
+
+Photos of a real sheet ("Killing Giants", front and back) are in `docs/brand/sample-notes/`; the reader and the dashboard preview match them.
 
 Typography follows the printed notes: a serif for titles and headings, a readable sans serif for body text, italics for scripture.
 

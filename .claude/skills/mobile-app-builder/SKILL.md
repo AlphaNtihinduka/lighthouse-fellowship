@@ -59,7 +59,10 @@ Route files compose feature components; logic lives in `src/features`. Pure logi
 
 * Pagination is measured-and-packed: render each block off-screen (or measure with `onLayout` in a hidden pass) at the current width and font scale, collect heights, then a pure function packs blocks into pages given the page height minus header and footer.
 * A block taller than a page (long SCRIPTURE) is split at sentence boundaries by the same pure logic.
-* Header (thumbnail, "Sermon Notes", title, "(con't)") and footer (preacher, "Lighthouse Fellowship Napoli", date, "(over)") repeat on every page.
+* Header and footer repeat on every page and must match the photographed sheet in `docs/brand/sample-notes/` (the dashboard's `PaperFrame.tsx` + `.paper__*` styles already do; mirror them):
+  * Header: small picture top left (about a fifth of the width); "Sermon Notes" bold serif in maroon `#7A3328`, centred on the page; a maroon rule from the picture's right edge to the margin; the title centred under it. Pages after the first add a small "(con't)" after the title.
+  * Footer: "(over)" small at the bottom right on every page **except the last** (on paper it is on the front, meaning "turn over"); a thick-over-thin double rule; preacher with "Lighthouse Fellowship Napoli" under it on the left; the date as "September 13, 2026" on the right; serif.
+  * Body: sans serif; scripture bold italic with the reference bold, upright, right-aligned; headings bold with "I." numbers and a hanging indent.
 * Re-paginate on rotation, window size change and font-scale change. Keep the reader position close to the same block.
 * The dashboard preview uses the same rules; keep the packing function free of React Native so it can be shared or copied verbatim ([[dashboard-builder]]).
 
@@ -89,6 +92,7 @@ Route files compose feature components; logic lives in `src/features`. Pure logi
 * Lighthouse red `#C62828`: primary buttons, active states, score highlight
 * Beam yellow `#F4C542`: word-bank chips, celebration, "new note" badge
 * Paper `#FBF8F1`: reader page background
+* Maroon `#7A3328`: "Sermon Notes" and the header rule (estimated from the photo)
 
 A serif for titles and headings, a readable sans serif for body, italics for scripture (load with expo-font). English strings only.
 

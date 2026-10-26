@@ -94,3 +94,11 @@ export function formatChurchDateTime(instant: string) {
     minute: '2-digit',
   }).format(new Date(instant))
 }
+
+const paperDateFormat = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' })
+
+// "September 13, 2026", as printed on the sheet.
+export function paperDateLabel(isoDate: string) {
+  const [year, month, day] = isoDate.split('-').map(Number)
+  return year && month && day ? paperDateFormat.format(new Date(Date.UTC(year, month - 1, day))) : ''
+}
