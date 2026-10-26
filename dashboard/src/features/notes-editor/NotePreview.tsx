@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { NoteBlock, Segment } from '../../api/types'
-import { sundayLabel } from '../notes-calendar/calendar'
+import { PaperFooter, PaperHeader } from './PaperFrame'
 import { isBlank } from './segments'
 
 type Props = {
@@ -14,10 +14,11 @@ type Props = {
 const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII']
 
 /**
- * The note in the paper layout at phone width (PLAN §2: header picture, "Sermon Notes",
- * title, numbered headings, italic scripture with right-aligned reference, footer).
+ * The note in the paper layout at phone width, matched to the photographed sheets in
+ * docs/brand/sample-notes/ (header, numbered headings, bold italic scripture with a
+ * right-aligned reference, double-rule footer).
  *
- * One continuous column for now. Page breaks need the measure-and-pack function the
+ * One continuous column for now, so it is a single page: no "(con't)" and no "(over)". Page breaks need the measure-and-pack function the
  * mobile reader will use; it is built once in phase 3 and this preview then uses it,
  * so the two can never disagree (dashboard-builder skill).
  */
@@ -36,17 +37,7 @@ export function NotePreview({ title, preacherName, sermonDate, coverImageUrl, bl
       </div>
       <div className="phone" aria-label="Phone preview">
         <article className="paper">
-          <header className="paper__header">
-            {coverImageUrl ? (
-              <img className="paper__cover" src={coverImageUrl} alt="" />
-            ) : (
-              <div className="paper__cover paper__cover--empty" aria-hidden="true" />
-            )}
-            <div>
-              <div className="paper__kicker">Sermon Notes</div>
-              <h2 className="paper__title">{title || 'Untitled'}</h2>
-            </div>
-          </header>
+          <PaperHeader title={title} coverImageUrl={coverImageUrl} />
 
           {blocks.length === 0 && <p className="paper__empty">Add blocks to see the note here.</p>}
 
@@ -57,7 +48,9 @@ export function NotePreview({ title, preacherName, sermonDate, coverImageUrl, bl
                 return (
                   <h3 key={block.id} className="paper__heading">
                     {number && <span className="paper__heading-number">{number}.</span>}
-                    <Line segments={block.segments} showAnswers={showAnswers} />
+                    <span className="paper__heading-text">
+                      <Line segments={block.segments} showAnswers={showAnswers} />
+                    </span>
                   </h3>
                 )
               }
@@ -95,11 +88,7 @@ export function NotePreview({ title, preacherName, sermonDate, coverImageUrl, bl
             }
           })}
 
-          <footer className="paper__footer">
-            <span>{preacherName}</span>
-            <span>Lighthouse Fellowship Napoli</span>
-            <span>{sermonDate ? sundayLabel(sermonDate) : ''}</span>
-          </footer>
+          <PaperFooter preacherName={preacherName} sermonDate={sermonDate} />
         </article>
       </div>
     </div>

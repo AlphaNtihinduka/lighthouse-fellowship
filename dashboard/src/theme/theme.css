@@ -7,6 +7,9 @@
   --color-yellow: #f4c542;
   --color-yellow-soft: #fdf3d3;
   --color-paper: #fbf8f1;
+  /* "Sermon Notes" and the header rule on the printed sheet (estimated from
+     docs/brand/sample-notes/; adjust against the original file if available). */
+  --color-maroon: #7a3328;
   --color-surface: #ffffff;
   --color-border: #e4ded0;
   --color-muted: #6b7083;
@@ -677,26 +680,31 @@ a {
 }
 
 .paper {
-  padding: 1em 1.1em 1.5em;
-  font-size: 15px;
-  color: var(--color-navy);
+  padding: 1em 1.1em 1.25em;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #222;
+  font-family: Calibri, Carlito, 'Segoe UI', var(--font-sans);
 }
 
+/* Picture small at top left (about a fifth of the width); "Sermon Notes" and the
+   title centred on the whole page, as on the sheet; the maroon rule runs from the
+   picture's right edge to the margin. */
 .paper__header {
-  display: flex;
-  gap: 0.75em;
-  align-items: center;
-  padding-bottom: 0.6em;
-  margin-bottom: 0.8em;
-  border-bottom: 2px solid var(--color-navy);
+  display: grid;
+  grid-template-columns: 22% 1fr;
+  grid-template-rows: auto auto auto;
+  column-gap: 0;
+  margin-bottom: 0.9em;
 }
 
 .paper__cover {
-  width: 72px;
-  height: 72px;
+  grid-column: 1;
+  grid-row: 1 / 3;
+  width: 100%;
+  aspect-ratio: 3 / 2;
   object-fit: cover;
-  border-radius: 4px;
-  flex: none;
+  align-self: start;
 }
 
 .paper__cover--empty {
@@ -704,35 +712,65 @@ a {
 }
 
 .paper__kicker {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  text-align: center;
   font-family: var(--font-serif);
-  font-style: italic;
-  color: var(--color-muted);
+  font-weight: 700;
+  font-size: 1.45em;
+  color: var(--color-maroon);
+}
+
+.paper__rule {
+  grid-column: 2;
+  grid-row: 2;
+  align-self: end;
+  border-top: 1.5px solid var(--color-maroon);
 }
 
 .paper__title {
-  margin: 0;
-  font-size: 1.35em;
+  grid-column: 1 / -1;
+  grid-row: 3;
+  margin: 0.3em 0 0;
+  text-align: center;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 1.55em;
+  color: #222;
+}
+
+.paper__continued {
+  font-size: 0.5em;
+  vertical-align: middle;
 }
 
 .paper__empty {
   color: var(--color-muted);
   text-align: center;
   padding: 2em 0;
+  font-family: var(--font-sans);
 }
 
+/* "I. God will prepare us…": bold, numbered, long lines hang under the text. */
 .paper__heading {
-  font-size: 1.05em;
+  display: flex;
+  gap: 0.45em;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 1.12em;
   margin: 1em 0 0.4em;
+  color: #222;
 }
 
 .paper__heading-number {
-  margin-right: 0.4em;
+  flex: none;
 }
 
+/* Bold italic quote, reference upright and right-aligned. */
 .paper__scripture {
-  margin: 0.8em 0;
-  font-family: var(--font-serif);
+  margin: 0.7em 0;
   font-style: italic;
+  font-weight: 700;
 }
 
 .paper__scripture p {
@@ -742,7 +780,6 @@ a {
 .paper__scripture footer {
   text-align: right;
   font-style: normal;
-  font-size: 0.9em;
 }
 
 .paper__paragraph {
@@ -761,7 +798,7 @@ a {
 .paper__blank {
   display: inline-block;
   min-width: 6.5em;
-  border-bottom: 1.5px solid var(--color-navy);
+  border-bottom: 1.2px solid #222;
   text-align: center;
   line-height: 1.2;
 }
@@ -772,7 +809,7 @@ a {
 }
 
 .paper__reflection p {
-  font-weight: 600;
+  font-weight: 700;
   margin: 0.8em 0 0.3em;
 }
 
@@ -787,10 +824,30 @@ a {
 
 .paper__footer {
   margin-top: 1.5em;
-  padding-top: 0.5em;
-  border-top: 1px solid var(--color-navy);
+  font-family: var(--font-serif);
+}
+
+.paper__over {
+  text-align: right;
+  font-family: inherit;
+  font-size: 0.9em;
+  margin-bottom: 0.2em;
+}
+
+/* Thick line over a thin one, with a visible gap between them. The height includes
+   both borders (box-sizing: border-box), so the gap is 7 - 3.5 - 1 = 2.5px. */
+.paper__double-rule {
+  border-top: 3.5px solid #333;
+  border-bottom: 1px solid #333;
+  height: 7px;
+}
+
+.paper__footer-text {
   display: flex;
   justify-content: space-between;
-  gap: 0.5em;
-  font-size: 0.75em;
+  align-items: flex-start;
+  gap: 0.75em;
+  padding-top: 0.4em;
+  font-size: 0.85em;
+  line-height: 1.35;
 }
