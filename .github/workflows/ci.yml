@@ -64,3 +64,5 @@ jobs:
           cache-dependency-path: mobile/package-lock.json
       - run: npm ci
       - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test

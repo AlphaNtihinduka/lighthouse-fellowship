@@ -25,21 +25,17 @@ Live at `http://187.127.77.125:8099` (health UP, admin login verified). Deploys 
 
 Follow-ups for the user: change the seed admin password; save the VPS `.env` in a password manager; rotate the Docker Hub token (it was pasted in chat) and update `DOCKER_PASSWORD`.
 
-## Current: phase 2, Dashboard: code complete, waiting for the sample notes to be entered
+## Phase 2, Dashboard: done
 
-Live at `http://187.127.77.125:8100`. Login, notes calendar, Account (password change), and the note editor:
-title / Sunday / preacher (default Pastor Joe Benecasa) / cover; blocks Heading, Scripture, Paragraph,
-Numbered list, Reflection; make-blank by selecting 1–3 whole words (chips, × turns back into text,
-side-by-side blanks); move up/down and drag to reorder; delete with confirmation; stable `b-…`/`k-…` ids
-never reused; client checks that mirror the backend validator plus server 400s shown on the named block;
-unsaved-changes guard; phone-width paper preview with Show answers; Publish now / Schedule (Rome time) /
-Unpublish / Delete. 55 dashboard tests.
+Live at `http://187.127.77.125:8100`: login, notes calendar, editor with blanks, publish/schedule, paper-faithful preview (matched to `docs/brand/sample-notes/`). "Seeing Jesus in David" is entered as a draft. The other two sample notes can be entered whenever answers are known.
 
-Phase 2 is done when the three sample notes (PLAN §14) are entered in the live dashboard.
+## Current: phase 3, Mobile reader (3a of 2 done locally)
 
-Deferred to phase 3, on purpose: the preview is one continuous column. Page breaks need the
-measure-and-pack function the mobile reader uses; build it once there (pure TS, shared or copied with the
-same tests) and switch the preview to it.
+3a (this PR): expo-router app (`mobile/src/app`): Home (this Sunday + Continue), Archive (year → month → Sunday), Reader with measured pagination (`features/reader/paginate.ts`, pure and unit-tested; scripture split at sentence ends; headings kept with the next block; "(con't)" on later pages, "(over)" on all but the last), offline cache persisted to AsyncStorage (30 days), last page remembered. Checked on web at 390×844 against a local backend with the full Killing Giants text (4 pages).
+
+Not yet checked on a real phone: scripture splitting (needs `onTextLayout`, which web lacks), Android/iOS fonts, Expo Go over plain HTTP.
+
+3b (next): page-turn animation (Reanimated + Gesture Handler, with the slide fallback), EAS preview APK (cleartext HTTP allowed only in that profile), dashboard preview switched to the same `paginate.ts`, app icon/splash (needs the high-resolution logo).
 
 ## Known gaps (not blocking)
 
