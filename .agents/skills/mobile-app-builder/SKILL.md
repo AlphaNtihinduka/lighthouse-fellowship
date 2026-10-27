@@ -81,6 +81,7 @@ Route files compose feature components; logic lives in `src/features`. Pure logi
 * React Native 0.88: `View`/`ScrollView` refs are host elements; type them `HostInstance` / `ScrollViewInstance`, not the component type.
 * Blanks are inline views inside `<Text>` (fixed note-wide width from `blankWidth`); the measuring pass renders them inside `<NoGame>` so they don't register as drop targets.
 * Another `npx expo start` (the user's own, for Expo Go) may already hold port 8081; never kill it, run a second server on another port.
+* The word tray has a fixed height (`TRAY_HEIGHT`) and one sideways-scrolling row: pages can have 10+ blanks, and a wrapping tray once covered the page controls. A dragged word is drawn as a ghost on the tray's root view (a scroll view clips its children); the chip pan uses `activeOffsetY: [-8, 8]` + `failOffsetX: [-30, 30]`. A tighter sideways limit (14) cancelled real upward drags.
 
 ## Animation and Gestures
 

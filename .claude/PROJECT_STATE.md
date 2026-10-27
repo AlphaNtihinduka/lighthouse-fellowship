@@ -29,13 +29,13 @@ Follow-ups for the user: change the seed admin password; save the VPS `.env` in 
 
 Live at `http://187.127.77.125:8100`: login, notes calendar, editor with blanks, publish/schedule, paper-faithful preview (matched to `docs/brand/sample-notes/`). "Seeing Jesus in David" is entered as a draft. The other two sample notes can be entered whenever answers are known.
 
-## Phase 3, Mobile reader: 3a done (merged); 3b deferred until after the game
+## Phase 3, Mobile reader: 3a and 3b done
 
-3a: Home, Archive, Reader with measured pagination, offline cache. The user runs it in Expo Go on an iPhone (`npx expo start` in `mobile/`; Expo CLI login needs `npx expo login --no-browser` on this Windows machine). Still to confirm on the phone: scripture split across pages (publish "Killing Giants" and check pages 1–2).
+3a: Home, Archive, Reader with measured pagination, offline cache. 3b: book-like page turn (`PageTurner.tsx`, eased 3D rotation around the left edge with shadow, follows the finger, Reduce Motion respected) and an installable Android APK via EAS (`eas.json` preview profile, `app.config.js` allows HTTP only outside production; project `@alphantihinduka/lighthouse-fellowship`, remote signing key). How to build and install: `docs/runbooks/android-test-build.md`.
 
-3b (after phase 4, user's choice): page-turn animation, EAS preview APK, dashboard preview on the shared `paginate.ts`, app icon (needs the high-resolution logo).
+Still open from phase 3: confirm the scripture split and drag-and-drop on a real phone; the dashboard preview should use the same `paginate.ts`; app icon and splash (needs the high-resolution logo); automatic fallback to a simple slide on slow phones (not built: only Reduce Motion switches the animation off).
 
-## Current: phase 4, Word game: built, PR open
+## Phase 4, Word game: done (merged)
 
 Play mode (default for notes with blanks; Read via the top-bar toggle): per-page tray with only that page's answers, shuffled with a fixed seed; drag a chip onto a blank or tap chip then blank; tap a filled blank to send the word back; "x of N blanks filled"; Finish on the last page scores the whole note; results sheet (score, celebration ≥80%, missed answers, Review / Show all answers / Try again); review marks blanks green ✓ / red ✗. Repeated answers are interchangeable. Placements are saved per note + contentVersion; finished attempts are stored with a `clientAttemptId` and `synced: false` for phase 5. Archive shows the best score.
 

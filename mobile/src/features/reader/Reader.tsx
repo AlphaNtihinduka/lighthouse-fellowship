@@ -1,17 +1,5 @@
-import { memo, useEffect, useMemo, useRef, useState } from 'react'
-import {
-  ActivityIndicator,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  useWindowDimensions,
-  View,
-  type LayoutChangeEvent,
-  type NativeScrollEvent,
-  type NativeSyntheticEvent,
-  type ScrollViewInstance,
-} from 'react-native'
+import { memo, useEffect, useMemo, useState } from 'react'
+import { ActivityIndicator, Pressable, StyleSheet, Text, useWindowDimensions, View, type LayoutChangeEvent } from 'react-native'
 import type { PublicNote } from '../../api/types'
 import { colors, fonts } from '../../theme'
 import { BlankWidthContext } from '../game/Blank'
@@ -20,6 +8,7 @@ import { useGame } from '../game/GameProvider'
 import { ResultsSheet } from '../game/ResultsSheet'
 import { TRAY_HEIGHT, WordBank } from '../game/WordBank'
 import { saveLastOpened } from './lastOpened'
+import { PageTurner } from './PageTurner'
 import { PaperFooter, PaperHeader, PaperItem } from './Paper'
 import { toRenderItems, type RenderItem } from './renderItems'
 import { PAGE_PADDING, usePages } from './usePages'
@@ -28,7 +17,7 @@ type Size = { width: number; height: number }
 
 // Reader (PLAN §7): the note as pages that fit the screen, swiped left like a book.
 // In Play and Review the word-bank tray sits under the page, so the page is shorter
-// and the note is paginated for that height. The 3D page turn comes in phase 3b.
+// and the note is paginated for that height. Pages turn like a book (PageTurner).
 export function Reader({ note, initialPage = 0 }: { note: PublicNote; initialPage?: number }) {
   const [size, setSize] = useState<Size | null>(null)
   const { fontScale } = useWindowDimensions()
@@ -75,23 +64,14 @@ type PagedNoteProps = {
 function PagedNote({ note, size, withTray, initialPage, onPageChange }: PagedNoteProps) {
   const pageHeight = size.height - CONTROLS_HEIGHT - (withTray ? TRAY_HEIGHT : 0)
   const [result, measurer] = usePages(note, size.width, pageHeight)
-  const [page, setPage] = useState(0)
-  const scroller = useRef<ScrollViewInstance>(null)
+  // null until the reader turns a page: until then it shows the remembered page (or the
+  // last one, if the layout now has fewer), without playing a turn on opening.
+  const [turnedTo, setTurnedTo] = useState<number | null>(null)
   const game = useGame()
   const pages = useMemo(() => (result.status === 'ready' ? result.pages : []), [result])
   const pageCount = pages.length
   const pageBlanks = useMemo(() => pages.map((items) => blanksOf(items)), [pages])
-
-  // Open on the remembered page (or the last one, if the layout now has fewer). Once only:
-  // after that the reader's own swipes decide the page.
-  const positioned = useRef(false)
-  useEffect(() => {
-    if (pageCount === 0 || positioned.current) return
-    positioned.current = true
-    const start = Math.min(initialPage, pageCount - 1)
-    setPage(start)
-    requestAnimationFrame(() => scroller.current?.scrollTo({ x: start * size.width, animated: false }))
-  }, [pageCount, initialPage, size.width])
+  const page = turnedTo ?? Math.max(0, Math.min(initialPage, pageCount - 1))
 
   useEffect(() => {
     if (pageCount === 0) return
@@ -100,13 +80,7 @@ function PagedNote({ note, size, withTray, initialPage, onPageChange }: PagedNot
   }, [note.id, note.title, page, pageCount, onPageChange])
 
   const goTo = (target: number) => {
-    const clamped = Math.max(0, Math.min(pageCount - 1, target))
-    scroller.current?.scrollTo({ x: clamped * size.width, animated: true })
-    setPage(clamped)
-  }
-
-  const onScrollEnd = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    setPage(Math.round(event.nativeEvent.contentOffset.x / size.width))
+    setTurnedTo(Math.max(0, Math.min(pageCount - 1, target)))
     game?.selectChip(null)
   }
 
@@ -122,20 +96,14 @@ function PagedNote({ note, size, withTray, initialPage, onPageChange }: PagedNot
         </View>
       ) : (
         <>
-          <ScrollView
-            ref={scroller}
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            onMomentumScrollEnd={onScrollEnd}
-            style={styles.fill}
-          >
-            {pages.map((items, index) => (
-              <View key={index} style={{ width: size.width, height: pageHeight }}>
-                <Page note={note} items={items} index={index} count={pageCount} />
-              </View>
-            ))}
-          </ScrollView>
+          <PageTurner
+            width={size.width}
+            height={pageHeight}
+            pageCount={pageCount}
+            page={page}
+            onPageChange={goTo}
+            renderPage={(index) => <Page note={note} items={pages[index]} index={index} count={pageCount} />}
+          />
 
           {withTray && mode === 'play' && <WordBank noteId={note.id} pageIndex={page} pageBlanks={pageBlanks[page] ?? []} />}
           {withTray && mode === 'review' && game?.score && (
