@@ -5,13 +5,20 @@
 // A page turned this far is edge-on: invisible, out of the way.
 export const TURNED_ANGLE = -90
 
+// Eased so the page swings away quickly at first and the next page shows early in the
+// drag; a straight line looked like the page only tilting.
+export function turnEase(progress: number): number {
+  'worklet'
+  return 1 - Math.pow(1 - progress, 1.6)
+}
+
 // Rotation of page `index` around its left edge, in degrees.
 export function pageAngle(index: number, position: number): number {
   'worklet'
   const turning = Math.floor(position)
   if (index < turning) return TURNED_ANGLE
   // Written so a page at rest is exactly 0, not -0.
-  if (index === turning && position > turning) return TURNED_ANGLE * (position - turning)
+  if (index === turning && position > turning) return TURNED_ANGLE * turnEase(position - turning)
   return 0
 }
 

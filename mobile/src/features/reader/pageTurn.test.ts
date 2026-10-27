@@ -1,19 +1,27 @@
 import { describe, expect, it } from '@jest/globals'
-import { clampPosition, pageAngle, shadeOpacity, turnTarget, TURNED_ANGLE } from './pageTurn'
+import { clampPosition, pageAngle, shadeOpacity, turnEase, turnTarget, TURNED_ANGLE } from './pageTurn'
 
 describe('pageAngle', () => {
   it('at rest, pages before the current one are turned away and the rest lie flat', () => {
     expect([0, 1, 2, 3].map((i) => pageAngle(i, 2))).toEqual([TURNED_ANGLE, TURNED_ANGLE, 0, 0])
   })
 
-  it('the current page rotates with the drag', () => {
-    expect(pageAngle(2, 2.5)).toBeCloseTo(-45)
+  it('the current page rotates with the drag, eased to swing away early', () => {
+    expect(pageAngle(2, 2.5)).toBeCloseTo(-90 * turnEase(0.5))
+    expect(pageAngle(2, 2.5)).toBeLessThan(-55)
     expect(pageAngle(3, 2.5)).toBe(0)
+  })
+
+  it('the easing starts at 0, ends at a full turn and never goes backwards', () => {
+    expect(turnEase(0)).toBe(0)
+    expect(turnEase(1)).toBe(1)
+    const samples = Array.from({ length: 11 }, (_, i) => turnEase(i / 10))
+    expect(samples.every((value, i) => i === 0 || value >= samples[i - 1])).toBe(true)
   })
 
   it('turning back brings the previous page in from edge-on', () => {
     // From page 2 dragged back 30%: position 1.7, page 1 is 70% turned.
-    expect(pageAngle(1, 1.7)).toBeCloseTo(-63)
+    expect(pageAngle(1, 1.7)).toBeCloseTo(-90 * turnEase(0.7))
     expect(pageAngle(2, 1.7)).toBe(0)
   })
 })

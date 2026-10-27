@@ -92,7 +92,9 @@ function TurningPage({
   const pageStyle = useAnimatedStyle(() => {
     const angle = pageAngle(index, position.get())
     return {
-      transform: [{ perspective: 1400 }, { rotateY: `${angle}deg` }],
+      // Moderate perspective: enough depth to read as a turning sheet without the near
+      // edge growing so much that it hides the next page.
+      transform: [{ perspective: 2200 }, { rotateY: `${angle}deg` }],
       // Edge-on pages are hidden so they never catch a touch or show a sliver.
       opacity: angle <= TURNED_ANGLE + 0.5 ? 0 : 1,
       // Earlier pages lie on top of later ones, like a stack of sheets.
