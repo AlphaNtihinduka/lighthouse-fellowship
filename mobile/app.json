@@ -30,6 +30,12 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "54054fa7-6027-4d13-986e-b0334f4bc3ac"
+      }
+    },
+    "owner": "alphantihinduka"
   }
 }
