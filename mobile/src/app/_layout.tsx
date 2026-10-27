@@ -1,6 +1,7 @@
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { CACHE_BUSTER, PERSIST_MAX_AGE, persister, queryClient } from '../api/queryClient'
 import { colors, fonts } from '../theme'
@@ -8,7 +9,9 @@ import { colors, fonts } from '../theme'
 // Providers: the query cache is restored from the phone on start, so notes opened
 // before can be read with no network (PLAN §7).
 export default function RootLayout() {
+  // GestureHandlerRootView: the word-game chips are dragged with Gesture Handler.
   return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
     <SafeAreaProvider>
       <PersistQueryClientProvider
         client={queryClient}
@@ -29,5 +32,6 @@ export default function RootLayout() {
         </Stack>
       </PersistQueryClientProvider>
     </SafeAreaProvider>
+    </GestureHandlerRootView>
   )
 }

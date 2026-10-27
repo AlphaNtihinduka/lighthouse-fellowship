@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState, type ReactNode } from 'react'
 import { Platform, StyleSheet, View, type LayoutChangeEvent } from 'react-native'
 import type { PublicNote } from '../../api/types'
+import { NoGame } from '../game/GameProvider'
 import { planPages, type LineInfo, type MeasuredUnit } from './paginate'
 import { PaperFooter, PaperHeader, PaperItem } from './Paper'
 import { splitItem, toRenderItems, type RenderItem } from './renderItems'
@@ -72,7 +73,9 @@ export function usePages(note: PublicNote, pageWidth: number, pageHeight: number
   }
 
   const pending = items.filter((item) => !isMeasured(item, measures))
+  // NoGame: blanks are measured as plain lines and never register as drop targets.
   const measurer = (
+    <NoGame>
     <View style={[styles.measurer, { width: pageWidth - 2 * PAGE_PADDING }]} pointerEvents="none" aria-hidden>
       {chrome.header === undefined && (
         <View onLayout={(event) => setChrome((c) => ({ ...c, header: height(event) }))}>
@@ -90,6 +93,7 @@ export function usePages(note: PublicNote, pageWidth: number, pageHeight: number
         </View>
       ))}
     </View>
+    </NoGame>
   )
 
   const pagesResult: PagesResult =

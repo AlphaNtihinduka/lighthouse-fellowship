@@ -3,7 +3,7 @@ name: mobile-app-builder
 description: Use when building or changing the Lighthouse Fellowship mobile app in mobile/ (Expo + TypeScript + expo-router), including screens, the paginated reader, the page-turn animation, the word game, offline caching, visitor sign-in, theming and EAS builds.
 ---
 
-The mobile app is where visitors read sermon notes and play the fill-in-the-blank game. It is anonymous by default and must work offline once a note has been opened. Product rules are in [[lighthouse-domain-rules]]; screens are in `docs/PLAN.md` §7. Phase 3a built Home, Archive and the paginated Reader (`src/features/reader/`: `paginate.ts` pure planner, `renderItems.ts`, `usePages.tsx` measure-and-plan loop, `Paper.tsx`); keep these conventions.
+The mobile app is where visitors read sermon notes and play the fill-in-the-blank game. It is anonymous by default and must work offline once a note has been opened. Product rules are in [[lighthouse-domain-rules]]; screens are in `docs/PLAN.md` §7. Phase 3a built Home, Archive and the paginated Reader (`src/features/reader/`: `paginate.ts` pure planner, `renderItems.ts`, `usePages.tsx` measure-and-plan loop, `Paper.tsx`). Phase 4 built the game (`src/features/game/`: `game.ts` pure rules incl. attempts/best score, `progress.ts` AsyncStorage, `GameProvider.tsx`, `Blank.tsx` inline drop target, `WordBank.tsx`, `ResultsSheet.tsx`). Keep these conventions.
 
 ## Stack
 
@@ -73,6 +73,14 @@ Route files compose feature components; logic lives in `src/features`. Pure logi
 * Web has no `onTextLayout`, so scripture is never split there (it is clipped at the footer). Splitting can only be checked on a phone.
 * Git Bash rewrites arguments starting with `/` into Windows paths; prefix such commands with `MSYS_NO_PATHCONV=1`.
 * `<Link asChild>` drops a `style` function on its child; use a `Pressable` with `router.push` when the pressed style matters.
+
+## Library versions that differ from older docs
+
+* Gesture Handler is v3: use the hooks API (`usePanGesture`, `useTapGesture`, `useExclusiveGestures`, `<GestureDetector gesture={...}>`); callbacks are `onBegin/onActivate/onUpdate/onDeactivate/onFinalize`. `Gesture.Pan()` still exists but is the legacy API.
+* Reanimated 4 + react-native-worklets: call JS from a worklet with `scheduleOnRN(fn, ...args)` (from `react-native-worklets`); mark gesture callbacks `'worklet'`.
+* React Native 0.88: `View`/`ScrollView` refs are host elements; type them `HostInstance` / `ScrollViewInstance`, not the component type.
+* Blanks are inline views inside `<Text>` (fixed note-wide width from `blankWidth`); the measuring pass renders them inside `<NoGame>` so they don't register as drop targets.
+* Another `npx expo start` (the user's own, for Expo Go) may already hold port 8081; never kill it, run a second server on another port.
 
 ## Animation and Gestures
 

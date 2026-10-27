@@ -6,6 +6,7 @@ import { listNotes, queryKeys } from '../api/client'
 import { NoteCard } from '../components/NoteCard'
 import { StateMessage } from '../components/StateMessage'
 import { groupByYearAndMonth } from '../features/archive/groupNotes'
+import { useBestScores } from '../features/game/useBestScores'
 import { colors, fonts } from '../theme'
 
 // Archive (PLAN §7): pick a year, then the months and Sundays in it, newest first.
@@ -13,6 +14,7 @@ export default function ArchiveScreen() {
   const notes = useQuery({ queryKey: queryKeys.notes, queryFn: listNotes })
   const years = groupByYearAndMonth(notes.data ?? [])
   const [selectedYear, setSelectedYear] = useState<number | null>(null)
+  const best = useBestScores()
   const year = years.find((group) => group.year === selectedYear) ?? years[0]
 
   if (notes.isPending) return <StateMessage loading />
@@ -47,7 +49,11 @@ export default function ArchiveScreen() {
           <View key={month.month} style={styles.month}>
             <Text style={styles.monthTitle}>{month.label}</Text>
             {month.notes.map((note) => (
-              <NoteCard key={note.id} note={note} />
+              <NoteCard
+                key={note.id}
+                note={note}
+                caption={best[note.id] ? `Best score ${best[note.id].score} / ${best[note.id].total}` : undefined}
+              />
             ))}
           </View>
         ))}

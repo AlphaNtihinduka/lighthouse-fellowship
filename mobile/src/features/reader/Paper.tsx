@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, type TextLayoutEvent } from 'react-native'
 import type { Segment } from '../../api/types'
 import { colors, fonts } from '../../theme'
 import { paperDateLabel } from '../archive/groupNotes'
+import { Blank } from '../game/Blank'
 import type { LineInfo } from './paginate'
 import { scriptureText, type RenderItem } from './renderItems'
 
@@ -13,9 +14,6 @@ import { scriptureText, type RenderItem } from './renderItems'
 // Vertical padding inside every item. It is part of the measured height, so the
 // spacing between blocks is the same in the measuring pass and on the page.
 export const ITEM_PADDING = 6
-// Fixed-width blank: the same length whatever the answer, so it gives nothing away.
-// The text around it already carries its own spaces ("both " + blank + " " + blank + ".").
-const BLANK = '__________'
 
 export function PaperHeader({ title, coverImageUrl, continued }: { title: string; coverImageUrl: string | null; continued: boolean }) {
   return (
@@ -56,15 +54,11 @@ export function PaperFooter({ preacherName, sermonDate, showOver }: { preacherNa
   )
 }
 
+// Blanks are inline boxes inside the running text: an empty line when reading, a drop
+// target in the game. The text around a blank already carries its own spaces.
 function Line({ segments }: { segments: Segment[] }) {
   return segments.map((segment, index) =>
-    'blankId' in segment ? (
-      <Text key={segment.blankId} accessibilityLabel="blank">
-        {BLANK}
-      </Text>
-    ) : (
-      <Text key={index}>{segment.text}</Text>
-    ),
+    'blankId' in segment ? <Blank key={segment.blankId} segment={segment} /> : <Text key={index}>{segment.text}</Text>,
   )
 }
 
