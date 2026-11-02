@@ -119,6 +119,7 @@ A serif for titles and headings, a readable sans serif for body, italics for scr
 
 * `development`: dev client, internal distribution, HTTP allowed.
 * `preview`: Android APK (`buildType: "apk"`) for installing on test phones; HTTP to the VPS IP allowed.
+* `store-test`: Play internal-testing bundle (AAB, `eas submit` track `internal`); still HTTP to the VPS IP until the domain exists. Runbook: `docs/runbooks/play-store-internal-testing.md`.
 * `production`: store builds (AAB / iOS), HTTPS only, no cleartext.
 
 Each profile sets its own `EXPO_PUBLIC_API_URL` in `env`. iPhone testing uses Expo Go until the Apple Developer account exists. Release and store steps belong to phase 6; see [[docker-vps-deployment]] for the server side.

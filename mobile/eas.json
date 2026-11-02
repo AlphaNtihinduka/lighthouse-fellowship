@@ -13,8 +13,26 @@
         "EXPO_PUBLIC_API_URL": "http://187.127.77.125:8099"
       }
     },
+    "store-test": {
+      "distribution": "store",
+      "autoIncrement": true,
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "env": {
+        "EXPO_PUBLIC_API_URL": "http://187.127.77.125:8099"
+      }
+    },
     "production": {
       "autoIncrement": true
+    }
+  },
+  "submit": {
+    "store-test": {
+      "android": {
+        "track": "internal",
+        "releaseStatus": "completed"
+      }
     }
   }
 }
