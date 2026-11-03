@@ -45,7 +45,7 @@ Live data: "Seeing Jesus in David" (Sept 20) and "Killing Giants" (Sept 13, full
 
 ## Phase 6a, Play Store internal testing: in progress (branch `phase-6a-play-store-internal`)
 
-Going to the Play Store first (personal Google Play account); Apple later. Done in the repo: app icon, adaptive icon and splash (a drawn vector lighthouse, `docs/brand/lighthouse-icon.svg`, placeholder until a high-res logo exists), `store-test` EAS profile (AAB, internal track, still HTTP to the VPS IP), privacy policy `docs/privacy-policy.md` (no data collected; contact email still a placeholder), listing text and graphics `docs/store/play/`, runbook `docs/runbooks/play-store-internal-testing.md`.
+Going to the Play Store first (personal Google Play account); Apple later. Done in the repo: app icon, adaptive icon and splash (a drawn vector lighthouse, `docs/brand/lighthouse-icon.svg`, placeholder until a high-res logo exists), `store-test` EAS profile (AAB, internal track, still HTTP to the VPS IP), privacy policy `docs/privacy-policy.md` (no data collected; contact info@lighthousefellowshipnapoli.org), listing text and graphics `docs/store/play/`, runbook `docs/runbooks/play-store-internal-testing.md`.
 
 Next: the user creates the app in Play Console, fills App content, uploads the first AAB by hand, adds testers. Then: Google service account for `eas submit`; start the 12-tester / 14-day closed test early (personal-account rule). Public release still needs the domain + HTTPS (`production` profile).
 
@@ -58,7 +58,6 @@ Next: the user creates the app in Play Console, fills App content, uploads the f
 ## Open items waiting on the user
 
 * High-resolution logo (≥ 1024×1024, ideally SVG). Current file `docs/brand/logo-original.png` is 139×93; the app uses a drawn placeholder icon until then.
-* Contact email for the privacy policy and the Play listing.
 * Where database backups should be stored.
 * Missing sample answers (PLAN §14). Placeholders are fine.
 * Is "ICF Napoli" the church's official name, and should the app show it?
@@ -70,4 +69,4 @@ Next: the user creates the app in Play Console, fills App content, uploads the f
 * Spring Boot 4 notes: Jackson 3 (`tools.jackson.*`; annotations are still `com.fasterxml.jackson.annotation`), Flyway via `spring-boot-starter-flyway`, Testcontainers 2 (`org.testcontainers.postgresql.PostgreSQLContainer`).
 * Delete my data: request in app → admin approves → purge 30 days after approval (ADR 0004).
 * VPS is shared with SponsorDirect and other apps. Taken ports (checked 2026-10-24): 8001, 8002 and every port from 8080 to 8098. 8094 is `attendance-domain`, 8095 an MT5 orchestrator on localhost. Ours: 8099 (API), 8100 (dashboard). Deploy dir `/opt/lighthouse-fellowship`.
-* No domain yet: test builds use HTTP to the VPS IP. Google Play account exists; Apple Developer account not yet. iPhone testing is via Expo Go only until then.
+* The church owns `lighthousefellowshipnapoli.org` (contact info@); a subdomain of it is the natural home for the API with HTTPS (to confirm with the user). No domain set up for the app yet: test builds use HTTP to the VPS IP. Google Play account exists; Apple Developer account not yet. iPhone testing is via Expo Go only until then.

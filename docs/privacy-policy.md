@@ -49,6 +49,6 @@ possible.
 
 ## Contact
 
-Questions about this policy: **[contact email]**.
+Questions about this policy: **info@lighthousefellowshipnapoli.org**.
 Under the GDPR you have the right to ask what data we hold about you and to have it deleted;
 for this app, that is nothing beyond what is described above.
