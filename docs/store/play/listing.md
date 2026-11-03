@@ -43,5 +43,5 @@ No sign-up, no ads, no tracking. The app does not collect your name or email.
 
 * App or game: **App**. Category: **Books & Reference** (or Education).
 * Tags: Bible, Church, Notes.
-* Contact email: the church's address (shown publicly on the listing).
+* Contact email (shown publicly on the listing): info@lighthousefellowshipnapoli.org
 * Privacy policy URL: see `docs/runbooks/play-store-internal-testing.md`, step 3.
