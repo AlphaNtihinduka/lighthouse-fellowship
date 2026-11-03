@@ -15,7 +15,7 @@ npx eas-cli@latest build -p android --profile preview
 It runs on Expo's servers (10–20 minutes, the free plan has a monthly build quota) and prints a
 link. The build page has an **Install** QR code and a download link for the `.apk`.
 
-* Profiles live in `mobile/eas.json`. `preview` = APK + test API URL. `production` = store build
+* Profiles live in `mobile/eas.json`. `preview` = APK + test API URL. `store-test` = Play internal testing bundle (see `play-store-internal-testing.md`). `production` = public store build
   (phase 6: add the HTTPS API URL first).
 * `mobile/app.config.js` allows plain HTTP only when the profile is not `production`.
 * Signing key: created and kept by EAS (remote credentials). Back it up from expo.dev →

@@ -26,7 +26,15 @@
     "scheme": "lighthousefellowship",
     "plugins": [
       "expo-router",
-      "expo-image"
+      "expo-image",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 200,
+          "backgroundColor": "#FBF8F1"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

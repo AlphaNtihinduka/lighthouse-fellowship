@@ -33,7 +33,7 @@ Live at `http://187.127.77.125:8100`: login, notes calendar, editor with blanks,
 
 3a: Home, Archive, Reader with measured pagination, offline cache. 3b: book-like page turn (`PageTurner.tsx`, eased 3D rotation around the left edge with shadow, follows the finger, Reduce Motion respected) and an installable Android APK via EAS (`eas.json` preview profile, `app.config.js` allows HTTP only outside production; project `@alphantihinduka/lighthouse-fellowship`, remote signing key). How to build and install: `docs/runbooks/android-test-build.md`.
 
-Still open from phase 3: confirm the scripture split and drag-and-drop on a real phone; the dashboard preview should use the same `paginate.ts`; app icon and splash (needs the high-resolution logo); automatic fallback to a simple slide on slow phones (not built: only Reduce Motion switches the animation off).
+Still open from phase 3: confirm the scripture split and drag-and-drop on a real phone; the dashboard preview should use the same `paginate.ts`; automatic fallback to a simple slide on slow phones (not built: only Reduce Motion switches the animation off).
 
 ## Phase 4, Word game: done (merged)
 
@@ -43,6 +43,12 @@ Verified on web (390×844, puppeteer) against a local backend: tap flow, drag-an
 
 Live data: "Seeing Jesus in David" (Sept 20) and "Killing Giants" (Sept 13, full text and answers from the photos) are drafts in the live dashboard.
 
+## Phase 6a, Play Store internal testing: in progress (branch `phase-6a-play-store-internal`)
+
+Going to the Play Store first (personal Google Play account); Apple later. Done in the repo: app icon, adaptive icon and splash (a drawn vector lighthouse, `docs/brand/lighthouse-icon.svg`, placeholder until a high-res logo exists), `store-test` EAS profile (AAB, internal track, still HTTP to the VPS IP), privacy policy `docs/privacy-policy.md` (no data collected; contact email still a placeholder), listing text and graphics `docs/store/play/`, runbook `docs/runbooks/play-store-internal-testing.md`.
+
+Next: the user creates the app in Play Console, fills App content, uploads the first AAB by hand, adds testers. Then: Google service account for `eas submit`; start the 12-tester / 14-day closed test early (personal-account rule). Public release still needs the domain + HTTPS (`production` profile).
+
 ## Known gaps (not blocking)
 
 * No off-VPS Postgres backup yet (see runbook).
@@ -51,7 +57,9 @@ Live data: "Seeing Jesus in David" (Sept 20) and "Killing Giants" (Sept 13, full
 
 ## Open items waiting on the user
 
-* High-resolution logo (≥ 1024×1024, ideally SVG). Current file `docs/brand/logo-original.png` is 139×93. Needed by phase 3.
+* High-resolution logo (≥ 1024×1024, ideally SVG). Current file `docs/brand/logo-original.png` is 139×93; the app uses a drawn placeholder icon until then.
+* Contact email for the privacy policy and the Play listing.
+* Where database backups should be stored.
 * Missing sample answers (PLAN §14). Placeholders are fine.
 * Is "ICF Napoli" the church's official name, and should the app show it?
 
